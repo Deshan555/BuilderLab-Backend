@@ -41,6 +41,14 @@ module.exports = (db) => {
       res.status(500).json({ error: 'Failed to delete data' });
     }
   });
+  router.get('/checklist/:checklistName', async (req, res) => {
+    try {
+      const data = await db.collection('templates').find({ checklistName: req.params.checklistName }).toArray();
+      res.json(data);
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to fetch data' });
+    }
+  });
 
   return router;
 };
