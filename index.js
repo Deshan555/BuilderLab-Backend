@@ -77,7 +77,9 @@ app.delete('/data/:id', async (req, res) => {
 app.get('/checklists', async (req, res) => {
     try {
       const checklists = await db.collection('checkLists').find().toArray();
-      res.json(checklists);
+      res.json(
+        checklists
+      );
     } catch (err) {
       res.status(500).json({ error: 'Failed to fetch checklists' });
     }
@@ -94,14 +96,17 @@ app.get('/checklists', async (req, res) => {
   
   app.post('/checklists', async (req, res) => {
     try {
+      console.log(req?.body);
       const checklist = {
         ...req.body,
         createdOn: new Date().toISOString(),
         updatedOn: new Date().toISOString(),
       };
       const result = await db.collection('checkLists').insertOne(checklist);
-      res.json(result.ops[0]);
+      console.log(result);
+      res.json(result);
     } catch (err) {
+      console.log(err);
       res.status(500).json({ error: 'Failed to create checklist' });
     }
   });
