@@ -14,7 +14,13 @@ module.exports = (db) => {
 
   router.post('/', async (req, res) => {
     try {
-      const result = await db.collection('templates').insertOne(req.body);
+      const data = {
+        ...req.body,
+        createdOn: new Date().toISOString(),
+        updatedOn: new Date().toISOString(),
+        uniqueId: Math.floor(Math.random() * 1000000),
+      };
+      const result = await db.collection('templates').insertOne(data);
       res.json(result);
     } catch (err) {
       res.status(500).json({ error: 'Failed to insert data' });
