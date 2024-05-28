@@ -11,7 +11,6 @@ module.exports = (db) => {
             res.status(500).json({ error: 'Failed to fetch mainGroups' });
         }
     });
-    
     router.get('/:id', async (req, res) => {
         try {
             const mainGroup = await db.collection('mainGroups').findOne({ _id: new ObjectId(req.params.id) });
@@ -20,11 +19,11 @@ module.exports = (db) => {
             res.status(500).json({ error: 'Failed to fetch mainGroup' });
         }
     });
-
     router.post('/', async (req, res) => {
         try {
             const mainGroup = {
                 ...req.body,
+                groupId: Math.floor(Math.random() * 1000000),
                 createdOn: new Date().toISOString(),
                 updatedOn: new Date().toISOString(),
             };
@@ -34,7 +33,14 @@ module.exports = (db) => {
             res.status(500).json({ error: 'Failed to create mainGroup' });
         }
     });
-
+    router.get('/group/:groupId', async (req, res) => {
+        try {
+            const mainGroup = await db.collection('mainGroups').find({ groupId: req.params.groupId }).toArray();
+            res.json(mainGroup);
+        } catch (err) {
+            res.status(500).json({ error: 'Failed to fetch mainGroup' });
+        }
+    });
     router.put('/:id', async (req, res) => {
         try {
             const updateFields = {
@@ -50,7 +56,6 @@ module.exports = (db) => {
             res.status(500).json({ error: 'Failed to update mainGroup' });
         }
     });
-
     router.delete('/:id', async (req, res) => {
         try {
             const result = await db.collection('mainGroups').deleteOne({ _id: new ObjectId(req.params.id) });
