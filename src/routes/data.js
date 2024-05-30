@@ -55,6 +55,14 @@ module.exports = (db) => {
       res.status(500).json({ error: 'Failed to fetch data' });
     }
   });
+  router.get('/checklist/id/:uniqueId', async (req, res) => {
+    try {
+      const data = await db.collection('templates').find({ uniqueId: parseInt(req.params.uniqueId) }).toArray();
+      res.json(data);
+    } catch (err) {
+      res.status(500).json({ error: 'Failed to fetch data' });
+    }
+  });
 
   return router;
 };

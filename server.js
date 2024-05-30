@@ -15,6 +15,7 @@ app.use(require('express-status-monitor')())
 connectDB().then((db) => {
   app.use('/data', require('./src/routes/data')(db));
   app.use('/checklists', require('./src/routes/checklists')(db));
+  app.use('/groups', require('./src/routes/groups')(db));
 });
 
 app.use(errorHandler);
