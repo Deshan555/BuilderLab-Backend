@@ -79,14 +79,9 @@ module.exports = (db) => {
   router.get('/checklist/section/:sectionID', async (req, res) => {
     try {
       const data = await db.collection('templates').find({ 'section.sectionID': req.params.sectionID }).toArray();
-let latestData = data.sort((a, b) => {
-    return new Date(b.createdOn) - new Date(a.createdOn);
-});
-
-let latestRecord = latestData[0];
-
-console.log(incrementVersion(latestRecord.version));
-
+      let latestData = data.sort((a, b) => {
+        return new Date(b.createdOn) - new Date(a.createdOn);
+      });
       res.json(data);
     } catch (err) {
       res.status(500).json({ error: 'Failed to fetch data' });
