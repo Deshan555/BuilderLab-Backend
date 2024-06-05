@@ -21,11 +21,24 @@ module.exports = (db) => {
                 group.active = true;
             });
             const sectionsFetch = await db.collection('templates').find({ checklistID: req.params.checklistID }).toArray();
-            groups.forEach(group => {
-                group.sections.forEach(section => {
-                    section.templates = sectionsFetch.filter(template => template.section.sectionID === section.sectionID);
-                });
-            });
+//             groups.forEach(group => {
+//                 // group.sections.forEach(section => {
+//                 //     section.templates = sectionsFetch.filter(template => template.section.sectionID === section.sectionID);
+//                 // });
+//                 group.sections.forEach(section => {
+//     section.templates = sectionsFetch.filter(template => template.section.sectionID === section.sectionID);
+//     section.active = checkList[0].isActive === true ? true : false;
+// });
+//             });
+groups.forEach(group => {
+    group.sections.forEach(section => {
+        section.templates = sectionsFetch.filter(template => template.section.sectionID === section.sectionID);
+        section.active = checkList[0].isActive === true ? true : false;
+        section.templates.forEach(template => {
+            template.active = checkList[0].isActive === true ? true : false;
+        });
+    });
+});
 //             groups.forEach(group => {
 //     group.sections.forEach(section => {
 //         section.templates = sectionsFetch.filter(template => template.section.sectionID === section.sectionID);
